@@ -5,14 +5,14 @@
             <div class="input-group">
                 <input type="text" class="form-control w-85" name="content[]" placeholder="@lang('messages.form.heading_help')">
                 <input type="hidden" name="type[]" value="header">
-                    <select class="form-select w-15" name="extra[]" aria-label="select">
-                      <option value="h1" selected>H1</option>
-                      <option value="h2">H2</option>
-                      <option value="h3">H3</option>
-                      <option value="h4">H4</option>
-                      <option value="h5">H5</option>
-                      <option value="h6">H6</option>                      
-                    </select>
+                <select class="form-select w-15" name="extra[]" aria-label="select">
+                    <option value="h1" selected>H1</option>
+                    <option value="h2">H2</option>
+                    <option value="h3">H3</option>
+                    <option value="h4">H4</option>
+                    <option value="h5">H5</option>
+                    <option value="h6">H6</option>
+                </select>
             </div>
         </div>
     </div>
@@ -32,7 +32,7 @@
                     <input onchange="ImageUpload(this)" class="fileupload d-none" type="file" name="post_image">
                 </label>
             </div>
-            <input class="photo_upload" name="content[]" type="hidden" value="">             
+            <input class="photo_upload" name="content[]" type="hidden" value="">
             <input type="hidden" name="type[]" value="image">
             <div class="fileinfo d-flex">
             </div>
@@ -49,7 +49,7 @@
     <div id="tweet_add">
         <label class="offset-md-1 col-md-2 col-form-label">@lang('messages.form.tweet')</label>
         <div class="col-sm-10 col-md-7">
-            <div class="input-group">                
+            <div class="input-group">
                 <input name="embed_url" type="text" class="form-control" placeholder="@lang('messages.form.tweet_help')">
                 <button class="btn btn-success" type="button" onclick="ClickEmbed(this)">@lang('messages.form.embed')</button>
             </div>
@@ -61,7 +61,7 @@
     <div id="face_add">
         <label class="offset-md-1 col-md-2 col-form-label">@lang('messages.form.facebook')</label>
         <div class="col-sm-10 col-md-7">
-            <div class="input-group">               
+            <div class="input-group">
                 <input name="embed_url" type="text" class="form-control" placeholder="@lang('messages.form.facebook_help')">
                 <button class="btn btn-success" type="button" onclick="ClickEmbed(this)">@lang('messages.form.embed')</button>
             </div>
@@ -73,7 +73,7 @@
     <div id="instagram_add">
         <label class="offset-md-1 col-md-2 col-form-label">@lang('messages.form.instagram')</label>
         <div class="col-sm-10 col-md-7">
-            <div class="input-group">                 
+            <div class="input-group">
                 <input name="embed_url" type="text" class="form-control" placeholder="@lang('messages.form.instagram_help')">
                 <button class="btn btn-success" type="button" onclick="ClickEmbed(this)">@lang('messages.form.embed')</button>
             </div>
@@ -85,7 +85,7 @@
     <div id="pinterest_add">
         <label class="offset-md-1 col-md-2 col-form-label">@lang('messages.form.pinterest')</label>
         <div class="col-sm-10 col-md-7">
-            <div class="input-group">                 
+            <div class="input-group">
                 <input name="embed_url" type="text" class="form-control" placeholder="@lang('messages.form.pinterest_help')">
                 <button class="btn btn-success" type="button" onclick="ClickEmbed(this)">@lang('messages.form.embed')</button>
             </div>
@@ -97,7 +97,7 @@
     <div id="tiktok_add">
         <label class="offset-md-1 col-md-2 col-form-label">@lang('messages.form.addtiktok')</label>
         <div class="col-sm-10 col-md-7">
-            <div class="input-group">                 
+            <div class="input-group">
                 <input name="embed_url" type="text" class="form-control" placeholder="@lang('messages.form.tiktok_help')">
                 <button class="btn btn-success" type="button" onclick="ClickEmbed(this)">@lang('messages.form.embed')</button>
             </div>
@@ -105,5 +105,37 @@
         <input type="hidden" class="form-control" name="content[]" value="">
         <input type="hidden" name="type[]" value="tiktok">
         <input type="hidden" name="extra[]">
+    </div>
+    <div id="map_add">
+        <label class="offset-md-1 col-md-2 col-form-label">Google Map</label>
+        <div class="col-sm-10 col-md-7">
+            <input type="text" class="form-control" name="content[]" placeholder="Enter Google Map Embed Code">
+            <input type="hidden" name="type[]" value="map">
+            <input type="hidden" name="extra[]">
+        </div>
+    </div>
+    <div id="website_add">
+        <label class="offset-md-1 col-md-2 col-form-label">Website Link</label>
+        <div class="col-sm-10 col-md-7">
+            <input type="text" class="form-control" name="content[]" placeholder="Enter Website URL">
+            <input type="hidden" name="type[]" value="website">
+            <input type="hidden" name="extra[]">
+        </div>
+    </div>
+    <div id="music_add">
+        <label class="offset-md-1 col-md-2 col-form-label">Sound Cloud Music</label>
+        <div class="col-sm-10 col-md-7">
+            <input type="text" class="form-control" name="content[]" placeholder="Enter Sound Cloud Embed Code">
+            <input type="hidden" name="type[]" value="music">
+            <input type="hidden" name="extra[]">
+        </div>
+    </div>
+    <div id="linkedin_add">
+        <label class="offset-md-1 col-md-2 col-form-label">Linkedin</label>
+        <div class="col-sm-10 col-md-7">
+            <input type="text" class="form-control" name="content[]" placeholder="Enter Linkedin Embed Code">
+            <input type="hidden" name="type[]" value="linkedin">
+            <input type="hidden" name="extra[]">
+        </div>
     </div>
 </div>
