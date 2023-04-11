@@ -18,7 +18,8 @@
         "laravel/socialite": "^5.1",
         "laravel/tinker": "^2.5",
         "mews/purifier": "^3.3",
-        "rachidlaasri/laravel-installer": "^4.1"
+        "rachidlaasri/laravel-installer": "^4.1",
+        "srmklive/paypal": "~1.9"
     },
     "require-dev": {
         "spatie/laravel-ignition": "^1.0",

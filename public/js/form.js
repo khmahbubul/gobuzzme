@@ -86,6 +86,8 @@ function ClickForm() {
                 postForm.outerHTML = '';
                 successMsg.classList.remove('d-none');
                 successMsg.innerHTML += data.success;
+                if (data.promote)
+                    window.location.replace(data.promote);
             } else {
                 embedBtn.innerHTML = orgBtn;
                 embedBtn.disabled = false;

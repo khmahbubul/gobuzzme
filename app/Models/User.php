@@ -16,7 +16,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    
+
     protected $guarded = ['id'];
 
     /**
@@ -49,11 +49,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
-    
+
     //posts that a specific user has liked
     public function likedPosts()
     {
         return $this->morphedByMany('App\Models\Post', 'likeable')->whereDeletedAt(null);
     }
 
+    public function promotes()
+    {
+        return $this->hasMany(Promote::class);
+    }
 }

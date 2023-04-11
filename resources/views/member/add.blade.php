@@ -240,6 +240,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <label class="offset-md-1 col-md-2 col-form-label">Promote</label>
+                            <div class="col-md-7">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="gridCheck2" name="promote"
+                                        value="1">
+                                    <label class="form-check-label" for="gridCheck2">
+                                        Yes, i want to promote.</label>
+                                </div>
+                            </div>
+                        </div>
                         <div id="subbtn" class="mb-3 row mb-5">
                             <div class="offset-md-3 col-md-7">
                                 <div id="show-err-msg" class="text-danger print-error-msg d-none">

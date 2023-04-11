@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Package;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Image;
 use App\Models\User;
 use App\Models\Post;
+use App\Models\Promote;
 
 class ProfileController extends Controller
 {
@@ -15,11 +17,11 @@ class ProfileController extends Controller
     {
         $this->middleware('auth', ['except' => ['show', 'followers', 'following']]);
     }
-    
+
     public function show($username)
     {
         $user = User::whereUsername($username)->firstOrFail();
-        
+
         $posts = Post::latest()
             ->wherePostLive(1)
             ->whereUserId($user->id)
@@ -38,7 +40,9 @@ class ProfileController extends Controller
     {
         $count = auth()->user()->notifications()->count();
 
-        $deleteNot = auth()->user()->notifications()->latest()->take($count)->skip(30)->get()->each(function($row){ $row->delete(); });
+        $deleteNot = auth()->user()->notifications()->latest()->take($count)->skip(30)->get()->each(function ($row) {
+            $row->delete();
+        });
 
         $notifications = auth()->user()->notifications()->limit(30)->get();
 
@@ -47,12 +51,39 @@ class ProfileController extends Controller
     }
 
     public function delnotifications()
-    {        
+    {
         auth()->user()->notifications()->delete();
 
         session()->flash('message', __('messages.comments.notdeleted'));
 
         return redirect('/notifications');
+    }
+
+    public function userPromotes()
+    {
+        $status = request('status') ?? 1;
+        $posts = Post::where('user_id', auth()->id())->paginate(10, ['*'], 'post');
+        // $promotes = Promote::with(['post', 'package'])->where('user_id', auth()->id())->where('status', $status)->paginate(10, ['*'], 'promote');
+        return view('member.post', compact('posts'));
+    }
+
+    public function userOrders()
+    {
+        $status = request('status') ?? 1;
+        $promotes = Promote::with(['post', 'package'])->where('user_id', auth()->id())->where('status', $status)->paginate(10, ['*'], 'promote');
+        return view('member.promote', compact('promotes'));
+    }
+
+    public function userPromotesAdd()
+    {
+        $posts = Post::where('user_id', auth()->id())->select(['id', 'user_id', 'post_title', 'post_slug', 'updated_at'])->paginate(10);
+        return view('member.add-promote', compact('posts'));
+    }
+
+    public function userPromotesSelectPackage(Post $post)
+    {
+        $packages = Package::where('status', 1)->get();
+        return view('member.select-promote-package', compact('post', 'packages'));
     }
 
     public function edit($username)
@@ -64,7 +95,7 @@ class ProfileController extends Controller
             ->whereUserId($user->id)
             ->withCount('likes')
             ->get();
-            
+
         return view('member.profileedit', compact('user', 'point'));
     }
 
@@ -72,48 +103,49 @@ class ProfileController extends Controller
     {
         $user = User::findOrFail($id);
 
-        $attributes = request(['name',  'username', 'avatar', 'cover', 'email', 'website' , 'facebook' ,
-        'twitter', 'instagram', 'linkedin']);
+        $attributes = request([
+            'name',  'username', 'avatar', 'cover', 'email', 'website', 'facebook',
+            'twitter', 'instagram', 'linkedin'
+        ]);
 
-        if($request->password) {
+        if ($request->password) {
             $this->validate(request(), [
                 'password' => 'required|min:6|confirmed',
             ]);
 
             $user->password = bcrypt(request('password'));
             $user->save();
-
         } else {
 
-        $this->validate(request(), [
-            'name' => 'required|max:255',
-            'username' => [
-                'required',
-                Rule::unique('users')->ignore($user->id),
-            ],
-            'email' => [
-                'required',
-                Rule::unique('users')->ignore($user->id),
-            ],
-        ]);
+            $this->validate(request(), [
+                'name' => 'required|max:255',
+                'username' => [
+                    'required',
+                    Rule::unique('users')->ignore($user->id),
+                ],
+                'email' => [
+                    'required',
+                    Rule::unique('users')->ignore($user->id),
+                ],
+            ]);
 
-        if ($request->hasFile('avatar')) {
-            $postimage = $request->file('avatar');
-            $filename = time() . '.' . $postimage->getClientOriginalExtension();
-            Image::make($postimage)->resize(100, 100)->save(public_path('/images/'. $filename));
-            $attributes['avatar'] = $filename;
-        } else {
-            $attributes['avatar'] = $user->avatar ;
-        }
+            if ($request->hasFile('avatar')) {
+                $postimage = $request->file('avatar');
+                $filename = time() . '.' . $postimage->getClientOriginalExtension();
+                Image::make($postimage)->resize(100, 100)->save(public_path('/images/' . $filename));
+                $attributes['avatar'] = $filename;
+            } else {
+                $attributes['avatar'] = $user->avatar;
+            }
 
-        if ($request->hasFile('cover')) {
-            $postimage = $request->file('cover');
-            $filename = time() . '.' . $postimage->getClientOriginalExtension();
-            Image::make($postimage)->resize(1440, 200)->save(public_path('/uploads/'. $filename));
-            $attributes['cover'] = $filename;
-        } else {
-            $attributes['cover'] = $user->cover ;
-        }
+            if ($request->hasFile('cover')) {
+                $postimage = $request->file('cover');
+                $filename = time() . '.' . $postimage->getClientOriginalExtension();
+                Image::make($postimage)->resize(1440, 200)->save(public_path('/uploads/' . $filename));
+                $attributes['cover'] = $filename;
+            } else {
+                $attributes['cover'] = $user->cover;
+            }
 
             $user->update($attributes);
         }
@@ -130,7 +162,7 @@ class ProfileController extends Controller
     }
 
     public function destroy($id)
-    {       
+    {
         //Delete user account
         $user = User::findOrFail($id);
         $user->comments()->delete();

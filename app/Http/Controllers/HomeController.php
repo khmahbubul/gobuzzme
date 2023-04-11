@@ -114,7 +114,7 @@ class HomeController extends Controller
                 }
             }
 
-            return response()->json(['success' => __('messages.postcreated')]);
+            return response()->json(['success' => __('messages.postcreated'), 'promote' => $request->has('promote') ? url('user-promotes-select-package' . '/' . $post->post_slug) : '']);
         }
 
         return response()->json(['error' => $validator->errors()->all()]);

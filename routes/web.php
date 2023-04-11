@@ -19,6 +19,9 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowsController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\PayPalController;
+use App\Http\Controllers\PromoteController;
+use App\Http\Controllers\PromotePackageController;
 
 Route::get('admin', [AdminController::class, 'index'])->name('admin');
 
@@ -46,6 +49,16 @@ Route::get('deleteaccount', [ProfileController::class, 'confirm']);
 Route::get('followers/{user:username}', [ProfileController::class, 'followers']);
 Route::get('following/{user:username}', [ProfileController::class, 'following']);
 Route::put('homepreference/{id}', [ProfileController::class, 'homepage']);
+
+Route::get('user-promotes', [ProfileController::class, 'userPromotes']);
+Route::get('user-orders', [ProfileController::class, 'userOrders']);
+Route::get('user-promotes-add', [ProfileController::class, 'userPromotesAdd']);
+Route::get('user-promotes-select-package/{post}', [ProfileController::class, 'userPromotesSelectPackage']);
+
+Route::post('user-add-promote', [PayPalController::class, 'userPromoteAdd'])->name('paypal.add.promote');
+
+
+
 
 Route::post('follow/{user}', [FollowsController::class, 'store']);
 
@@ -77,17 +90,29 @@ Route::resource('pages', PageController::class);
 Route::resource('contents', PostController::class);
 Route::resource('comments', CommentController::class);
 Route::resource('profile', ProfileController::class);
+Route::resource('promotes', PromoteController::class);
+Route::resource('packages', PromotePackageController::class);
 
 Route::get('auth/{driver}', [LoginController::class, 'redirectToProvider']);
 Route::get('auth/{driver}/callback', [LoginController::class, 'handleProviderCallback']);
 
-Route::get('instant/clear', function() {
-   Artisan::call('cache:clear');
-   Artisan::call('config:clear');
-   Artisan::call('view:clear');
-   Artisan::call('route:clear');
-   session()->flash('message', __('admin.cleared'));
-   return redirect('/');
+
+
+
+
+Route::get('cancel-payment', [PayPalController::class, 'paymentCancel'])->name('cancel.payment');
+Route::get('payment-success', [PayPalController::class, 'paymentSuccess'])->name('success.payment');
+
+
+
+
+Route::get('instant/clear', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    session()->flash('message', __('admin.cleared'));
+    return redirect('/');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

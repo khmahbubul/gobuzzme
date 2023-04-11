@@ -395,6 +395,20 @@
                         @endif
                     </div>
                 </div>
+
+                @auth
+                    @if ($post->user_id == auth()->id())
+                        <div class="row mb-5">
+                            <div class="col">
+                                <div class="d-grid gap-2">
+                                    <a href="{{ url('user-promotes-select-package') . '/' . $post->post_slug }}"
+                                        class="btn btn-info">Get More Views</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                @endauth
+
                 @if (!empty($setting->page_ads))
                     <div class="card border-one embed-responsive mb-3">
                         {!! $setting->page_ads !!}
